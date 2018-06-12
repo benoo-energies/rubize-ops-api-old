@@ -39,40 +39,35 @@ class OrderController extends Controller
                 $xml = simplexml_load_string($xml);                
 
                 if($xml->result == "0 : success" || $xml->result == "0: success" || $xml->result == "0 :success" ||  $xml->result == "0:success") {
-
                    $customer = Customer::where('telephone',  $request["clientTel"])
                    ->where('entrepreneur_id',$entrepreneur->id)
                    ->where('status', 1)
                    ->first();
                    
                    if(count($customer) > 0){
-                        $order = new Order;
-                        $order->entrepreneur_id = $entrepreneur->id;
-                        $order->customer_id = $customer->id;
-                        $order->total = $request['total'];
-                        $order->comission = $request['comission'];
-                        $order->status = 1;
-                        $order->save();
-                        foreach ($request->products as $key => $value) {
-                            if(!empty($value)) {
-                                $tmpDetail = new OrderDetail;
-                                $tmpDetail->entrepreneur_id = $entrepreneur->id;
-                                $tmpDetail->customer_id = $customer->id;
-                                $tmpDetail->service_id = $value['id'];
-                                $tmpDetail->order_id = $order->id;
-                                $tmpDetail->quantity = $value['qty'];
-                                $tmpDetail->status = 1;
-                                $tmpDetail->save();
-                            } 
-                        }
+                       $customerId = $customer->id;
                     } else {
-                        $order->delete();
-                        $result = array(
-                            "status" => false,
-                            "error" => "Une erreur s'est produite lors de l'enregistrement de la vente."
-                        );
-                        return response()->json($result);
-                    }                   
+                        $customerId = NULL;
+                    }   
+                    $order = new Order;
+                    $order->entrepreneur_id = $entrepreneur->id;
+                    $order->customer_id = $customerId;
+                    $order->total = $request['total'];
+                    $order->comission = $request['comission'];
+                    $order->status = 1;
+                    $order->save();
+                    foreach ($request->products as $key => $value) {
+                        if(!empty($value)) {
+                            $tmpDetail = new OrderDetail;
+                            $tmpDetail->entrepreneur_id = $entrepreneur->id;
+                            $tmpDetail->customer_id = $customerId;
+                            $tmpDetail->service_id = $value['id'];
+                            $tmpDetail->order_id = $order->id;
+                            $tmpDetail->quantity = $value['qty'];
+                            $tmpDetail->status = 1;
+                            $tmpDetail->save();
+                        } 
+                    }                                    
                     $balance = $xml->reservebalance;
                     $currency = $xml->reservecurrency;
                     $idClient = $request->entrepreneurTel;
@@ -99,7 +94,7 @@ class OrderController extends Controller
            } catch (RequestException $re) {
                 $result = array(
                     "status" => false,
-                    "error" => "Impossible de finaliser la vente, veuillez réessayer. Si le problème persiste contactez votre support Benoo Energies."
+                    "error" => "Une erreur s'est produite lors de l'enregistrement de la vente, veuillez réessayer. Si le problème persiste contactez votre support Benoo Energies."
                 );
                 return response()->json($result);
            }
