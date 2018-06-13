@@ -43,7 +43,7 @@ class EntrepreneurController extends Controller
         $entrepreneur = Entrepreneur::where('telephone', $request->entrepreneurTel)
         ->where('status', 1)->first();
 
-        if(count($entrepreneur) > 0) {
+        if(NULL != $entrepreneur && count($entrepreneur) > 0) {
             // Si le numéro existe en BDD --> Requête TAGPAY
             try {
  
