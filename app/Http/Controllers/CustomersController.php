@@ -39,7 +39,7 @@ class CustomersController extends Controller
         ->where('status', 1)->first();
         
         // CHeck si l'enrtrepreneur existe en BDD
-        if(count($customer) > 0) {
+        if($customer) {
             // Si oui
             // Redirection page de validation du paiement
             $customerData = array(
@@ -79,7 +79,7 @@ class CustomersController extends Controller
     public function createCustomer(Request $request, $entrepreneurId) {
 
         $checkExist = Customer::where('entrepreneur_id', $entrepreneurId)->where('telephone', $request->clientTel)->where('status', 1)->first();
-        if(count($checkExist) == 0) {
+        if($checkExist) {
             $customer = new Customer;
             $customer->entrepreneur_id = $entrepreneurId;
             $customer->firstname = $request->clientFirstname;

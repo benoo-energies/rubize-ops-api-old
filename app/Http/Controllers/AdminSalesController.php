@@ -59,7 +59,7 @@ class AdminSalesController extends Controller
                                  //echo "<h1>Order ID : $order->id</h1>";
                                  foreach ($idService as $key => $id) {
                                      $detail = $order->details()->where('order_id', $order->id)->where('service_id', $id)->where('status',1)->first();
-                                     if(count($detail) == 0) {
+                                     if(!$detail) {
                                         $qty = 0;
                                      } else {
                                          $qty = $detail->quantity;
@@ -112,7 +112,7 @@ class AdminSalesController extends Controller
                                 //echo "<h1>Order ID : $order->id</h1>";
                                 foreach ($idService as $key => $id) {
                                     $detail = $order->details()->where('provider_order_id', $order->id)->where('service_id', $id)->where('status',1)->first();
-                                    if(count($detail) == 0) {
+                                    if(!$detail) {
                                         $qty = 0;
                                     } else {
                                         $qty = $detail->quantity;
@@ -164,7 +164,7 @@ class AdminSalesController extends Controller
                              //echo "<h1>Order ID : $order->id</h1>";
                              foreach ($idService as $key => $id) {
                                  $detail = $order->details()->where('order_id', $order->id)->where('service_id', $id)->where('status',1)->first();
-                                 if(count($detail) == 0) {
+                                 if(!$detail) {
                                     $qty = 0;
                                  } else {
                                      $qty = $detail->quantity;
@@ -208,7 +208,7 @@ class AdminSalesController extends Controller
                              //echo "<h1>Order ID : $order->id</h1>";
                              foreach ($idService as $key => $id) {
                                  $detail = $order->details()->where('provider_order_id', $order->id)->where('service_id', $id)->where('status',1)->first();
-                                 if(count($detail) == 0) {
+                                 if(!$detail) {
                                     $qty = 0;
                                  } else {
                                      $qty = $detail->quantity;

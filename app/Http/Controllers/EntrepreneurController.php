@@ -14,7 +14,7 @@ class EntrepreneurController extends Controller
 
     public function checkEntrepreneurLogin(Request $request, $entrepreneurTel) {
         $entrepreneur = Entrepreneur::where('telephone', $entrepreneurTel)->where('status', 1)->first();
-        if(count($entrepreneur) > 0) {
+        if($entrepreneur) {
             // Si l'entrepreneur est déjà enregistré en BDD
             $customerData = array(
                 "entrepreneurBenooId"   => $entrepreneur->id,

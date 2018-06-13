@@ -18,7 +18,7 @@ class OrderController extends Controller
         $entrepreneur = Entrepreneur::where('telephone', $request['entrepreneurTel'])
         ->where('status', 1)->first();
 
-        if(count($entrepreneur) > 0) {
+        if($entrepreneur) {
             // Si le numéro existe en BDD --> Requête TAGPAY
             try {
                 $merchantId = $request['merchantId'][0];
@@ -44,7 +44,7 @@ class OrderController extends Controller
                    ->where('status', 1)
                    ->first();
                    
-                   if(count($customer) > 0){
+                   if($customer){
                        $customerId = $customer->id;
                     } else {
                         $customerId = NULL;

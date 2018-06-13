@@ -61,7 +61,7 @@ class ServicesController extends Controller
         $serviceTypes = ServiceType::whereIn('id', $tmpService)->where('status', 1)->get();
         
         $typeData = array();
-        if(count($serviceTypes) > 0) {
+        if($serviceTypes) {
             foreach ($serviceTypes as $key => $type) {
                 $tmpData = array(
                     "id"        => $type->id,
@@ -98,7 +98,7 @@ class ServicesController extends Controller
     public function getServiceByType(Request $request, $typeId) {
         // Check existance Type ID
         $serviceType = ServiceType::where('status', 1)->where('id', $typeId)->first();
-        if(count($serviceType) > 0) {
+        if($serviceType) {
             $services = Service::where('status', 1)->where('service_type_id', $typeId)->get();
             // Encodage au format JSON
             $servicesData = array();
