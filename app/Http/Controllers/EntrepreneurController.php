@@ -89,7 +89,7 @@ class EntrepreneurController extends Controller
                 $tmpData = array(
                     "id"            => $history->id,
                     "date"         => date('d/m/Y', strtotime($history->created_at)),
-                    "amount"       => $history->comission
+                    "amount"       => $history->total
                 );
                 $historyData[] = $tmpData;
             }
