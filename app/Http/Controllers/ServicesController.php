@@ -55,32 +55,41 @@ class ServicesController extends Controller
     */
     public function getServiceTypesEnt(Request $request, $entrepreneurBenooId) {
         $entrepreneur = Entrepreneur::where('id', $entrepreneurBenooId)->where('status', 1)->first();
-        
-        $tmpService = explode(",", $entrepreneur->services);
-
-        $serviceTypes = ServiceType::whereIn('id', $tmpService)->where('status', 1)->get();
-        
-        $typeData = array();
-        if($serviceTypes) {
-            foreach ($serviceTypes as $key => $type) {
-                $tmpData = array(
-                    "id"        => $type->id,
-                    "title"     => $type->title,
-                    "picture"   => $type->picture
+        if($entrepreneur) {
+            $tmpService = explode(",", $entrepreneur->services);
+            $serviceTypes = ServiceType::whereIn('id', $tmpService)->where('status', 1)->get();
+            
+            $typeData = array();
+            if($serviceTypes) {
+                foreach ($serviceTypes as $key => $type) {
+                    $tmpData = array(
+                        "id"        => $type->id,
+                        "title"     => $type->title,
+                        "picture"   => $type->picture
+                    );
+                    $typeData[] = $tmpData;
+                }
+                $result = array(
+                    "status" => true,
+                    "data" =>$typeData
                 );
-                $typeData[] = $tmpData;
-            }
-            $result = array(
-                "status" => true,
-                "data" =>$typeData
-            );
+    
+                return response()->json($result);
+            } else {
+                
+                $result = array(
+                    "status" => false,
+                    "error" => "Impossible de récupérer les catégories de services."
+                );
 
-            return response()->json($result);
+                return response()->json($result);
+            }
+        
         } else {
-            // ERREUR L'id du type de service est invalide
+
             $result = array(
                 "status" => false,
-                "error" => "No service type found"
+                "error" => "Impossible de récupérer les informations du compte."
             );
 
             return response()->json($result);
@@ -95,38 +104,44 @@ class ServicesController extends Controller
     *
     * @return Response
     */
-    public function getServiceByType(Request $request, $typeId) {
+    public function getServiceByType(Request $request, $typeId, $entrepreneurId = 0) {
         // Check existance Type ID
         $serviceType = ServiceType::where('status', 1)->where('id', $typeId)->first();
         if($serviceType) {
+
             $services = Service::where('status', 1)->where('service_type_id', $typeId)->get();
-            // Encodage au format JSON
+            
             $servicesData = array();
-            foreach ($services as $key => $service) {
-                $tmpData = array(
-                    "id"            => $service->id,
-                    "title"         => $service->title,
-                    "picture"       => $service->picture,
-                    "description"   => $service->description,
-                    "price_fcfa"    => $service->price_fcfa,
-                    "price_euro"    => $service->price_euro,
-                    "description"   => $service->description,
-
-                );
-                $servicesData[] = $tmpData;
+            
+            if(count($services) > 0) {
+                foreach ($services as $key => $service) {
+                    $tmpData = array(
+                        "id"            => $service->id,
+                        "title"         => $service->title,
+                        "picture"       => $service->picture,
+                        "description"   => $service->description,
+                        "price_fcfa"    => $service->entrepreneurPrice($entrepreneurId),
+                        "price_euro"    => $service->price_euro,
+                        "description"   => $service->description,
+                        
+                    );
+                    $servicesData[] = $tmpData;
+                }
+                
             }
-
+            
             $result = array(
                 'status'    => true,
                 'data'      => $servicesData
             );
+            // Encodage au format JSON
             return response()->json($result);
-
+            
         } else {
             // ERREUR L'id du type de service est invalide
             $result = array(
                 "status" => false,
-                "error" => "Invalid service type id"
+                "error" => "Impossible de récupérer les service associées"
             );
 
             return response()->json($result);

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Survey;
+use App\Village;
 use App\SurveyDispo;
 use App\SurveyProspect;
 use App\SurveyResult;
@@ -14,6 +15,25 @@ use Carbon\Carbon;
 
 class SurveyController extends Controller
 {
+
+    public function getVillages() {
+        $villages = Village::where('status', 1)->get();
+        $dataVillages = array();
+        if(count($villages) > 0) {
+            foreach ($villages as $key => $village) {
+                $dataVillages[] = array(
+                    "id"    => $village->id,
+                    "name"  => $village->name
+                );
+            }
+        }
+
+        $result = array(
+            'status'    => true,
+            'data'      => $dataVillages
+        );
+        return response()->json($result);   
+    }
 
     public function saveSurvey(Request $request, $entrepreneurId) {
         $dataKwh = array(
@@ -306,7 +326,7 @@ class SurveyController extends Controller
         // Survey
         $survey = new SurveyProspect;       
         $survey->prospect_id = $request->idProspect;
-        $survey->village = $request->village;
+        $survey->village_id = $request->village;
         $survey->firstname = $request->clientFirstname;
         $survey->lastname = $request->clientLastname;
         $survey->telephone = $request->clientTel;

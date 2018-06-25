@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use App\Survey;
 use App\SurveyProspect;
 use App\SurveyResult;
@@ -11,9 +12,55 @@ use App\SurveyWish;
 use App\SurveyDispo;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Entrepreneur;
+use App\Village;
 
 class AdminSurveyController extends Controller
 {
+
+    public function getSurveys() {
+        $villages = Village::where('status', 1)->get();
+        return view('surveys', ['villages' => $villages]);
+    }
+
+    public function addVillage(Request $request) {
+        $checkVillage = Village::where('name', $request->village)->first();
+        if($checkVillage) {
+            return Redirect::back()->with('status', 'addError');        
+        }
+        
+        $village = new Village;
+        $village->name = $request->village;
+        $village->status = 1;
+        $village->save();
+        return Redirect::back()->with('status', 'addSuccess');        
+    }
+
+    public function updateVillage(Request $request, $id) {
+        $village = Village::find($id);
+        if(!$village) {
+            return Redirect::back()->with('status', 'updateIdError');        
+        }        
+        $checkVillage = Village::where('name', $request->village)->first();
+        if($checkVillage) {
+            return Redirect::back()->with('status', 'updateError');        
+        }
+        
+        $village->name = $request->village;
+        $village->status = 1;
+        $village->save();        
+        return Redirect::back()->with('status', 'updateSuccess');        
+    }
+    
+    public function deleteVillage(Request $request, $id) {
+        $village = Village::find($id);
+        if(!$village) {
+            return Redirect::back()->with('status', 'deleteError');        
+        }
+        $village->status = 2;
+        $village->save();
+        return Redirect::back()->with('status', 'deleteSuccess');        
+
+    }
 
     private function createGlobalExcel($filename, $dataSurvey) {
         Excel::create($filename, function($excel)  use ($dataSurvey) {

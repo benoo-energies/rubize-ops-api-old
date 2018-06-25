@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Customer;
-use GuzzleHttp\Client as GuzzleHttpClient;
-use GuzzleHttp\Exception\RequestException;
 use App\Survey;
 use App\SurveyDispo;
 use App\SurveyProspect;

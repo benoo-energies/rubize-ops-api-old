@@ -5,14 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Entrepreneur;
+use App\Village;
 use App\Order;
-use GuzzleHttp\Client as GuzzleHttpClient;
-use GuzzleHttp\Exception\RequestException;
+use Illuminate\Support\Facades\Hash;
 
 class EntrepreneurController extends Controller
 {
 
-    public function checkEntrepreneurLogin(Request $request, $entrepreneurTel) {
+/*     public function checkEntrepreneurLogin(Request $request, $entrepreneurTel) {
         $entrepreneur = Entrepreneur::where('telephone', $entrepreneurTel)->where('status', 1)->first();
         if($entrepreneur) {
             // Si l'entrepreneur est déjà enregistré en BDD
@@ -35,64 +35,44 @@ class EntrepreneurController extends Controller
             return response()->json($result);  
         }
     }
-
+ */
 
 
     public function entrepreneurLogin(Request $request) {
-
         $entrepreneur = Entrepreneur::where('telephone', $request->entrepreneurTel)
         ->where('status', 1)->first();
-
         if($entrepreneur) {
-            // Si le numéro existe en BDD --> Requête TAGPAY
-            try {
- 
-                $client = new GuzzleHttpClient();
-      
-               //$response = $client->get('https://22806.tagpay.fr/api/tpstatus.php?merchantid=2631806354846560&password=ef9901d3ccfef8128f61cbc92ec1baf8&client=33660866178&PIN=2148');
-               $response = $client->get('https://22806.tagpay.fr/api/tpstatus.php?merchantid=2631806354846560&password=ef9901d3ccfef8128f61cbc92ec1baf8&client='.$request->entrepreneurTel.'&pin='.$request->entrepreneurPin);
-               //$response = $request->send();
-               $xml = $response->getBody();
-               $xml = simplexml_load_string($xml);
+            if(Hash::check($request->entrepreneurPin, $entrepreneur->pin)) {
+                $hashOK = true;
+            } else {            
+                $hashOK = false;
+            }
     
-               if($xml->result == "0: success") {
-                    $balance = $xml->reservebalance;
-                    $currency = $xml->reservecurrency;
-                    $idClient = $request->entrepreneurTel;
-                    $merchantId = $xml->merchantid;
+            if($hashOK) {
+                $result = array(
+                    'status'    => true,
+                    'data'      => array(
+                        "entrepreneurBenooId"       => $entrepreneur->id,
+                        "benoo_entrepreneur_id"     => $entrepreneur->id,
+                        "benoo_entrepreneur_tel"    => $entrepreneur->telephone
+                    )
+                );
+                return response()->json($result);            
+            } else {
+                // Si le numéro de l'entrepreneur n'existe pas en BDD
+                $result = array(
+                    "status" => false,
+                    "error" => "Télphone et/ou pin incorrect.",
+                );
+    
+                return response()->json($result);
+            }   
 
-                    $result = array(
-                        'status'    => true,
-                        'data'      => array(
-                            "balance"               => $balance,
-                            "currency"              => $currency,
-                            "idClient"              => $idClient,
-                            "merchantId"            => $merchantId,
-                            "entrepreneurBenooId"   => $entrepreneur->id
-                        )
-                    );
-                    return response()->json($result);                       
-                
-               } else {
-                $result = array(
-                    "status" => false,
-                    "error" => "Impossible de se connecter, votre compte n'est pas actif.Contactez votre support Benoo Energies pour plus d'information."
-                );
-                return response()->json($result);
-               }
-      
-           } catch (RequestException $re) {
-                $result = array(
-                    "status" => false,
-                    "error" => "Impossible de se connecter, veuillez réessayer. Si le problème persiste contactez votre support Benoo Energies."
-                );
-                return response()->json($result);
-           }
         } else {
             // Si le numéro de l'entrepreneur n'existe pas en BDD
             $result = array(
                 "status" => false,
-                "error" => "Impossible de se connecter, votre compte n'est pas actif.Contactez votre support Benoo Energies pour plus d'information.",
+                "error" => "Télphone et/ou pin incorrect.",
             );
 
             return response()->json($result);
@@ -120,7 +100,7 @@ class EntrepreneurController extends Controller
             );
         } else {
             $result = array(
-                'status'    => false,
+                'status'    => true,
                 'data'      => []
             );
         }

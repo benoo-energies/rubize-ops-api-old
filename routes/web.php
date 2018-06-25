@@ -26,14 +26,19 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/entrepreneur/profile/create', 'AdminEntrepreneurController@createProfile');
     Route::post('/entrepreneur/profile/update/{id}', 'AdminEntrepreneurController@updateProfile');
     Route::post('/entrepreneur/profile/delete/{id}', 'AdminEntrepreneurController@deleteProfile');
+    Route::post('/entrepreneur/password/{id}', 'AdminEntrepreneurController@newPassword');
 
 
     /** ENQUETES  */
-    Route::get('/surveys', function () { return view('surveys');});
+    Route::get('/surveys', 'AdminSurveyController@getSurveys');
     Route::post('/surveys/export/all', 'AdminSurveyController@exportAllSurvey');
     Route::post('/surveys/export/entrepreneur', 'AdminSurveyController@exportEntrepreneurSurvey');
     Route::post('/surveys/export/prospect', 'AdminSurveyController@exportProspectSurvey');
     
+    Route::post('/village/add', 'AdminSurveyController@addVillage');
+    Route::post('/village/update/{id}', 'AdminSurveyController@updateVillage');
+    Route::post('/village/delete/{id}', 'AdminSurveyController@deleteVillage');
+
     /** KPI  */
     /* 
     Route::get('/kpi', function () { return redirect('/kpi/prospection');});
