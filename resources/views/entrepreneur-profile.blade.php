@@ -104,20 +104,22 @@
                                     </label>
                                 @endforeach
                             @endif
+                            @if(isset($products))
+                                <h3>Tarifs produits</h3>
+                                @if(count($products) > 0)
+                                    @foreach($products as $product)
 
-                            <h3>Tarifs produits</h3>
-                            @if(count($products) > 0)
-                                @foreach($products as $product)
-
-                                    <div class="form-group">
-                                        <label for="service_{{$product->id}}" class="col-sm-4 col-md-2 col-form-label">{{$product->title}}</label>
-                                        <div class="col-sm-4 col-md-2">
-                                            <input type="number" step="any" class="form-control" id="service_" name="service_{{$product->id}}" value="@if(isset($entrepreneur)){{$product->entrepreneurPrice($entrepreneur->id)}}@else{{$product->entrepreneurPrice(0)}}@endif" placeholder="0.00">
+                                        <div class="form-group">
+                                            <label for="service_{{$product->id}}" class="col-sm-4 col-md-2 col-form-label">{{$product->title}}</label>
+                                            <div class="col-sm-4 col-md-2">
+                                                <input type="number" step="any" class="form-control" id="service_" name="service_{{$product->id}}" value="@if(isset($entrepreneur)){{$product->entrepreneurPrice($entrepreneur->id)}}@else{{$product->entrepreneurPrice(0)}}@endif" placeholder="0.00">
+                                            </div>
                                         </div>
-                                    </div>
-                                @endforeach
+                                    @endforeach
+                                @endif
                             @endif
 
+                            <div class="clearfix"></div>
 
                             @if(isset($entrepreneur))
                                 <button type="submit" class="btn btn-info btn-fill margin-top btn-lg">Enregistrer l'entrepreneur  </button>
