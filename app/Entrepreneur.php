@@ -29,4 +29,13 @@ class Entrepreneur extends Model
     {
         return $this->hasMany('App\Order');
     }
+    public function entrepreneurOrders()
+    {
+        return $this->hasMany('App\EntrepreneurOrder');
+    }
+    public function entrepreneurOrdersDetails()
+    {
+        return $this->hasMany('App\EntrepreneurOrderDetail');
+    }
+
 }

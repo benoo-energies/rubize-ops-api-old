@@ -25,15 +25,25 @@ Route::get('survey/villages', 'SurveyController@getVillages');
 
 Route::group(['middleware' => 'checkApi'], function () {
     Route::post('entrepreneur/login', 'EntrepreneurController@entrepreneurLogin');
-
+    
     // Route GET Liste des types de services
     Route::get('services/types', 'ServicesController@getServiceTypes');
     Route::get('services/types/{entrepreneurBenooId}', 'ServicesController@getServiceTypesEnt');
     // Route GET Liste des services par type
     Route::get('services/{typeId}/{entrepreneurBenooId}', 'ServicesController@getServiceByType');
-
+    
     Route::get('entrepreneur/check/{entrepreneurTel}', 'EntrepreneurController@checkEntrepreneurLogin');
     Route::get('entrepreneur/history/{entrepreneurId}', 'EntrepreneurController@getEntrepreneurHistory');
+    
+    // COMMANDES ENTREPRENEUR
+    // Route get produits réassort entrepreneur
+    Route::get('entrepreneurs/products', 'EntrepreneurProductController@getEntrepreneurProduct');
+    Route::get('entrepreneurs/orders/{entrepreneurId}/history', 'EntrepreneurOrderController@getOrderHistory');
+    // Route POST enregistrement commande entrepreneur
+    Route::post('entrepreneurs/orders/{entrepreneurId}/create', 'EntrepreneurOrderController@saveOrder');
+    Route::post('entrepreneurs/orders/{entrepreneurId}/{orderId}/status', 'EntrepreneurOrderController@updateOrderStatus');
+
+
 
     // Route POST de création de compte client
     Route::post('customer/{entrepreneurId}/create', 'CustomersController@createCustomer');

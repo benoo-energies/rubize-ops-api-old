@@ -41,3 +41,57 @@ html, body {
 .login img {
     max-width: 100%;
 }
+
+.bigcheck
+{
+  /* Double-sized Checkboxes */
+  -ms-transform: scale(1.4); /* IE */
+  -moz-transform: scale(1.4); /* FF */
+  -webkit-transform: scale(1.4); /* Safari and Chrome */
+  -o-transform: scale(1.4); /* Opera */
+  /* padding: 10px; */
+  position: relative;
+  top:-3px;
+}
+.bigcheckText{
+  /* Checkbox text */
+  font-size: 140%;
+  display: inline;
+  margin-left: 10px;
+}
+
+.ordersListing span.badge {
+    padding: 5px 15px;
+    font-size: 1.1em;
+    border-radius: 15px;
+}
+
+.ordersListing span.badge.badge-1, .ordersBtn a.btn-order-1{
+    background-color:#66615B;
+}
+
+.ordersListing span.badge.badge-2, .ordersBtn a.btn-order-2{
+    background-color:rgb(224, 133, 28);
+}
+
+.ordersListing span.badge.badge-3, .ordersBtn a.btn-order-3{
+    background-color:#F3BB45;
+}
+
+.ordersListing span.badge.badge-4, .ordersBtn a.btn-order-4{
+    background-color:rgb(52, 160, 76);
+}
+
+.ordersListing span.badge.badge-5, .ordersBtn a.btn-order-5{
+    background-color:#bf3329;
+}
+
+.paid {
+    font-size: 1.5em;
+}
+
+/* $brand-primary: #3097D1;
+$brand-info: #8eb4cb;
+$brand-success: #2ab27b;
+$brand-warning: #cbb956;
+$brand-danger: #bf5329; */

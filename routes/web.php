@@ -57,4 +57,19 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/product/update/{id}', 'AdminProductController@productUpdate');
     Route::post('/product/create', 'AdminProductController@productCreate');
     Route::post('/product/delete/{id}', 'AdminProductController@productDelete');
+    
+    
+    /** COMMANDES  */
+    Route::get('/orders', 'AdminOrderController@getEntrepreneurOrders');
+    Route::get('/orders/{entrepreneurId}/{orderId}', 'AdminOrderController@getEntrepreneurOrderDetail');
+    Route::post('/orders/{entrepreneurId}/{orderId}/update', 'AdminOrderController@updateEntrepreneurOrder');
+    
+    
+    
+    /** ENTREPRENEUR PRODUCT  */
+    Route::get('/entrepreneurs/products', 'AdminEntrepreneurProduct@getEntrepreneurProducts');
+    Route::post('/entrepreneurs/product/create', 'AdminEntrepreneurProduct@createEntrepreneurProduct');
+    Route::post('/entrepreneurs/product/update/{id}', 'AdminEntrepreneurProduct@updateEntrepreneurProduct');
+    Route::post('/entrepreneurs/product/delete/{id}', 'AdminEntrepreneurProduct@deleteEntrepreneurProduct');
+
 });

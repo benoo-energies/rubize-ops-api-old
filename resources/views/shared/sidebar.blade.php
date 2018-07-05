@@ -32,13 +32,25 @@
             <li @if($active == "sales") class="active"@endif>
                 <a href="/sales">
                     <i class="ti-money"></i>
-                    <p>Ventes</p>
+                    <p>Ventes ent.</p>
                 </a>
             </li>
             <li @if($active == "product") class="active"@endif>
                 <a href="/products">
                     <i class="ti-shopping-cart"></i>
-                    <p>Services</p>
+                    <p>Services ent.</p>
+                </a>
+            </li>
+            <li @if($active == "entrepreneurs-orders") class="active"@endif>
+                <a href="/orders">
+                    <i class="ti-package"></i>
+                    <p>Commandes </p>
+                </a>
+            </li>
+            <li @if($active == "entrepreneur-products") class="active"@endif>
+                <a href="/entrepreneurs/products">
+                    <i class="ti-bolt"></i>
+                    <p>Produits B2B </p>
                 </a>
             </li>
 {{--             <li @if($active == "kpi") class="active"@endif>
