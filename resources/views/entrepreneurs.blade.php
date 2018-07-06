@@ -23,7 +23,7 @@
                 <div class="row">
                     <div class="col-md-12 text-center">
                             <a href="/entrepreneur/profile/create" class="btn btn-warning btn-fill btn-lg margin-bottom">
-                                <i class="ti-plus"></i> Ajouter une entrepreneur
+                                <i class="ti-plus"></i> Ajouter un entrepreneur
                             </a>
                         </div>
                         <div class="col-md-12">
@@ -41,7 +41,6 @@
                                                 <th>Enquêtes</th>
                                                 <th>Clients</th>
                                                 <th>Ventes</th>
-                                                <th>&nbsp;</th>
                                                 <th>&nbsp;</th>
                                                 <th>&nbsp;</th>
                                             </thead>
