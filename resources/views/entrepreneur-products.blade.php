@@ -77,8 +77,8 @@
                                     <thead>
                                         <th>ID</th>
                                         <th>Titre</th>
-                                        <th>Catégorie</th>
                                         <th>Image</th>
+                                        <th>Unité</th>
                                         <th>Prix (Fcfa)</th>
                                         <th>&nbsp;</th>
                                         <th>&nbsp;</th>
