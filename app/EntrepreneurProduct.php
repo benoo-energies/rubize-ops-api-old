@@ -12,4 +12,10 @@ class EntrepreneurProduct extends Model
     {
         return $this->hasMany('App\EntrepreneurOrderDetail');
     }
+    
+    public function serviceType()
+    {
+        return $this->hasOne('App\ServiceType', 'id', 'service_type_id');
+    }
+
 }

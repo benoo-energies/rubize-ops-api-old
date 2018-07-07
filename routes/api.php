@@ -23,6 +23,7 @@ Route::get('/', function () {return view('welcome');});
 Route::post('survey-prospect/create', 'SurveyController@saveSurveyProspect');
 Route::get('survey/villages', 'SurveyController@getVillages');
 
+Route::get('entrepreneur/history/{entrepreneurId}', 'EntrepreneurController@getEntrepreneurHistory');
 Route::group(['middleware' => 'checkApi'], function () {
     Route::post('entrepreneur/login', 'EntrepreneurController@entrepreneurLogin');
     
@@ -33,11 +34,10 @@ Route::group(['middleware' => 'checkApi'], function () {
     Route::get('services/{typeId}/{entrepreneurBenooId}', 'ServicesController@getServiceByType');
     
     Route::get('entrepreneur/check/{entrepreneurTel}', 'EntrepreneurController@checkEntrepreneurLogin');
-    Route::get('entrepreneur/history/{entrepreneurId}', 'EntrepreneurController@getEntrepreneurHistory');
     
     // COMMANDES ENTREPRENEUR
     // Route get produits réassort entrepreneur
-    Route::get('entrepreneurs/products', 'EntrepreneurProductController@getEntrepreneurProduct');
+    Route::get('entrepreneurs/products/{typeId}', 'EntrepreneurProductController@getEntrepreneurProduct');
     Route::get('entrepreneurs/orders/{entrepreneurId}/history', 'EntrepreneurOrderController@getOrderHistory');
     // Route POST enregistrement commande entrepreneur
     Route::post('entrepreneurs/orders/{entrepreneurId}/create', 'EntrepreneurOrderController@saveOrder');

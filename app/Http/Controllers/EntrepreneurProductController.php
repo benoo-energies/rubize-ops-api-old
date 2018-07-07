@@ -9,9 +9,9 @@ use App\EntrepreneurProduct;
 class EntrepreneurProductController extends Controller
 {
 
-    public function getEntrepreneurProduct() {
+    public function getEntrepreneurProduct($typeId) {
         // Check existance Type ID
-            $products = EntrepreneurProduct::where('status', 1)->get();
+            $products = EntrepreneurProduct::where('status', 1)->where('service_type_id', $typeId)->get();
             
             $productData = array();
             

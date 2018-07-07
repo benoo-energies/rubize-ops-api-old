@@ -14,5 +14,9 @@ class ServiceType extends Model
         return $this->belongsTo('App\Service', 'service_type_id', 'id');
     }
 
+    public function entrepreneurProducts()
+    {
+        return $this->belongsTo('App\EntrepreneurProduct', 'service_type_id', 'id');
+    }
 
 }

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Entrepreneur;
 use App\Village;
 use App\Order;
+use App\EntrepreneurOrder;
 use Illuminate\Support\Facades\Hash;
 
 class EntrepreneurController extends Controller
@@ -81,15 +82,31 @@ class EntrepreneurController extends Controller
 
 
     public function getEntrepreneurHistory(Request $request, $entrepreneurId) {
-        $history = Order::where('entrepreneur_id', $entrepreneurId)->where('status', 1)->orderBy('created_at', 'DESC')->get();
+        $order = Order::select('id', 'created_at', 'total')->where('entrepreneur_id', $entrepreneurId)->where('status', 1)->orderBy('created_at', 'DESC')->get();
+        $entrepreneurOrder = EntrepreneurOrder::select('id', 'created_at', 'total')->where('entrepreneur_id', $entrepreneurId)->where('status', 2)->orderBy('created_at', 'DESC')->get();
+        $order->map(function ($ord) {
+            $ord['type'] = 'credit';
+            return $ord;
+        });
+        $entrepreneurOrder->map(function ($entOrd) {
+            $entOrd['type'] = 'debit';
+            return $entOrd;
+        });
+
+        $merged = $order->concat($entrepreneurOrder);
+        $history = $merged->sortByDesc(function($post)
+        {
+          return $post->created_at;
+        });
 
         $historyData = array();
         if(count($history) > 0) {
             foreach ($history as $key => $history) {
                 $tmpData = array(
-                    "id"            => $history->id,
-                    "date"         => date('d/m/Y', strtotime($history->created_at)),
-                    "amount"       => $history->total
+                    "id"        => $history->id,
+                    "date"      => date('d/m/Y', strtotime($history->created_at)),
+                    "amount"    => $history->total,
+                    "type"      => $history->type
                 );
                 $historyData[] = $tmpData;
             }

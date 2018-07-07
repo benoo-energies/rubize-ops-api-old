@@ -36,6 +36,16 @@
                                             <input type="text" class="form-control mb-5 mr-sm-5" id="title" placeholder="" name="title">
                                         </div>
                                         <div class="form-group">
+                                            <label for="service_type_id">Catégorie : </label>
+                                            @if(count($serviceType) > 0)
+                                            <select class="form-control" id="service_type_id" name="service_type_id">
+                                                @foreach($serviceType as $serv)
+                                                <option value="{{$serv->id}}">{{$serv->title}}</option>
+                                                @endforeach
+                                            </select>
+                                            @endif                                        
+                                        </div>                                        
+                                        <div class="form-group">
                                             <label for="service_type_id">Image : </label>
                                             <select class="form-control" id="picture" name="picture">
                                                 <option value="batterie.jpg">Batterie</option>
@@ -60,11 +70,6 @@
                                             </select>
                                         </div>
                                         <div class="form-group">
-                                            <label for="unity">Unité : </label>
-                                            <input type="text" class="form-control mb-5 mr-sm-5" id="unity" placeholder="" name="unity">
-                                        </div>
-
-                                        <div class="form-group">
                                             <label for="price_fcfa">Prix (Fcfa) : </label>
                                             <input type="text" class="form-control mb-2 mr-sm-2" id="price_fcfa" placeholder="" name="price_fcfa">
                                         </div>
@@ -77,8 +82,8 @@
                                     <thead>
                                         <th>ID</th>
                                         <th>Titre</th>
+                                        <th>Catégorie</th>
                                         <th>Image</th>
-                                        <th>Unité</th>
                                         <th>Prix (Fcfa)</th>
                                         <th>&nbsp;</th>
                                         <th>&nbsp;</th>
@@ -91,6 +96,15 @@
                                                         {{ csrf_field() }}
                                                         <td>{{$prod->id}}</td>
                                                         <td><input type="text" name="title" class="form-control" id="title" value="{{$prod->title}}" placeholder=""></td>
+                                                        <td>
+                                                            @if(count($serviceType) > 0)
+                                                                <select class="form-control" id="service_type_id" name="service_type_id">
+                                                                @foreach($serviceType as $serv)
+                                                                    <option value="{{$serv->id}}" @if($serv->id == $prod->service_type_id) selected @endif >{{$serv->title}}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            @endif
+                                                        </td>
                                                         <td>
                                                             <select class="form-control" id="picture" name="picture">
                                                                 <option value="batterie.jpg" @if($prod->picture == 'batterie.jpg') selected @endif >Batterie</option>
@@ -114,7 +128,6 @@
                                                                 <option value="viande.jpg" @if($prod->picture == 'viande.jpg') selected @endif >Viande</option>
                                                             </select>
                                                         </td>
-                                                        <td><input type="text" name="unity" class="form-control" id="unity" value="{{$prod->unity}}" placeholder=""></td>
                                                         <td><input type="text" class="form-control" name="price_fcfa" id="price_fcfa" value="{{$prod->price_fcfa}}" placeholder=""></td>
                                                         
                                                         <td><button type="submit" class="btn btn-info btn-fill"><i class="ti-save"></i></button></td>
