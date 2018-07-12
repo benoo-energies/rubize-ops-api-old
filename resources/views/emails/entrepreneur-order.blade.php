@@ -24,7 +24,7 @@
         			<td>&nbsp;</td>
         			<td width="30">&nbsp;</td>
       			</tr>
-{{--       			<tr>
+      			<tr>
         			<td width="30">&nbsp;</td>
                     <td height="60">Bonjour, <br>
                         Une commande a été passée, voici les informations de l'entrepreneur :
@@ -35,7 +35,7 @@
                         <br><br>
                         <b>Et voici les produits commandés :</b> <br>&nbsp;</td>
         			<td width="30">&nbsp;</td>
-			  	</tr> --}}
+			  	</tr>
                   
       			<tr>
                     <td width="30">&nbsp;</td>
@@ -47,14 +47,14 @@
                             <td bgcolor="#f4912f"><b>Prix Unitaire</b></td>
                             <td bgcolor="#f4912f"><b>Prix Total</b></td>
                         </tr>
-                        @foreach($products as $product)
+                        {{-- @foreach($products as $product)
                         <tr>
                             <td>{{$product['title']}}</td>
                             <td>{{$product['qty']}}</td>
                             <td>{{$product['price_fcfa']}}</td>
                             <td>{{$product['qty'] * $product['price_fcfa']}}</td>
                         </tr>
-                        @endforeach
+                        @endforeach --}}
 						<tr>
                             <td colspan="3" bgcolor="#f4912f"><b>TOTAL : </b></td>
                             <td><b>{{$total}}</b> Fcfa</td>
