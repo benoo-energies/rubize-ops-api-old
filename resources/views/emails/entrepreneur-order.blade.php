@@ -47,14 +47,14 @@
                             <td bgcolor="#f4912f"><b>Prix Unitaire</b></td>
                             <td bgcolor="#f4912f"><b>Prix Total</b></td>
                         </tr>
-    {{--                     @foreach($products as $product)
+                        @foreach($products as $product)
                         <tr>
                             <td>{{$product['title']}}</td>
                             <td>{{$product['qty']}}</td>
                             <td>{{$product['price_fcfa']}}</td>
                             <td>{{$product['qty'] * $product['price_fcfa']}}</td>
                         </tr>
-                        @endforeach --}}
+                        @endforeach
 						<tr>
                             <td colspan="3" bgcolor="#f4912f"><b>TOTAL : </b></td>
                             <td><b>{{$total}}</b> Fcfa</td>
