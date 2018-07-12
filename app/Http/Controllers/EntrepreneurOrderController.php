@@ -40,7 +40,7 @@ class EntrepreneurOrderController extends Controller
                 $m->from('contact@benoo-energies.com', 'Benoo Energies');
     
                 //$m->to(["akenfack@benoo-energies.com", "contact@benoo-energies.com"])->subject('Une nouvelle commande entrepreneur a été enregistrée');
-                $m->to(["vjlockel@gmail.com"])->subject('Une nouvelle commande entrepreneur a été enregistrée');
+                $m->to("vjlockel@gmail.com")->subject('Une nouvelle commande entrepreneur a été enregistrée');
             });
 
             $result = array(
