@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Entrepreneur;
 use App\EntrepreneurOrder;
 use App\EntrepreneurOrderDetail;
+use Illuminate\Support\Facades\Mail;
 
 class EntrepreneurOrderController extends Controller
 {
@@ -38,7 +39,8 @@ class EntrepreneurOrderController extends Controller
             Mail::send('emails.entrepreneur-order', ['products' => $request->products, 'total' => $request['total'], "entrepreneur" => $entrepreneur], function ($m) {
                 $m->from('contact@benoo-energies.com', 'Benoo Energies');
     
-                $m->to(["akenfack@benoo-energies.com", "contact@benoo-energies.com"])->subject('Une nouvelle commande entrepreneur a été enregistrée');
+                //$m->to(["akenfack@benoo-energies.com", "contact@benoo-energies.com"])->subject('Une nouvelle commande entrepreneur a été enregistrée');
+                $m->to(["vjlockel@gmail.com"])->subject('Une nouvelle commande entrepreneur a été enregistrée');
             });
 
             $result = array(
