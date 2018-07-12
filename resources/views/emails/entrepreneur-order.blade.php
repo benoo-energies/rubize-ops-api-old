@@ -49,11 +49,10 @@
                         </tr>
                         @foreach($products as $product)
                         <tr>
-                            {{-- <td>{{$product['title']}}</td> --}}
-                            <td>TITLE</td>
+                            <td>{{$product['title']}}</td>
                             <td>{{$product['qty']}}</td>
-                            <td>{{$product['price_fcfa']}}</td>
-                            <td>{{$product['qty'] * $product['price_fcfa']}}</td>
+                            <td>{{$product['price']}}</td>
+                            <td>{{$product['qty'] * $product['price']}}</td>
                         </tr>
                         @endforeach
 						<tr>
