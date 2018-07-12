@@ -80,10 +80,9 @@ class EntrepreneurController extends Controller
         }
     }
 
-
     public function getEntrepreneurHistory(Request $request, $entrepreneurId) {
         $order = Order::select('id', 'created_at', 'total')->where('entrepreneur_id', $entrepreneurId)->where('status', 1)->orderBy('created_at', 'DESC')->get();
-        $entrepreneurOrder = EntrepreneurOrder::select('id', 'created_at', 'total')->where('entrepreneur_id', $entrepreneurId)->where('status', 2)->orderBy('created_at', 'DESC')->get();
+        $entrepreneurOrder = EntrepreneurOrder::select('id', 'created_at', 'total')->where('entrepreneur_id', $entrepreneurId)->whereIn('status', [2,3,4])->orderBy('created_at', 'DESC')->get();
         $order->map(function ($ord) {
             $ord['type'] = 'credit';
             return $ord;

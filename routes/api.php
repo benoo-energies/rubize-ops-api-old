@@ -23,7 +23,6 @@ Route::get('/', function () {return view('welcome');});
 Route::post('survey-prospect/create', 'SurveyController@saveSurveyProspect');
 Route::get('survey/villages', 'SurveyController@getVillages');
 
-Route::get('entrepreneur/history/{entrepreneurId}', 'EntrepreneurController@getEntrepreneurHistory');
 Route::group(['middleware' => 'checkApi'], function () {
     Route::post('entrepreneur/login', 'EntrepreneurController@entrepreneurLogin');
     
@@ -42,8 +41,9 @@ Route::group(['middleware' => 'checkApi'], function () {
     // Route POST enregistrement commande entrepreneur
     Route::post('entrepreneurs/orders/{entrepreneurId}/create', 'EntrepreneurOrderController@saveOrder');
     Route::post('entrepreneurs/orders/{entrepreneurId}/{orderId}/status', 'EntrepreneurOrderController@updateOrderStatus');
-
-
+    
+    
+    Route::get('entrepreneur/history/{entrepreneurId}', 'EntrepreneurController@getEntrepreneurHistory');
 
     // Route POST de création de compte client
     Route::post('customer/{entrepreneurId}/create', 'CustomersController@createCustomer');
