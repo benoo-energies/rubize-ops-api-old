@@ -48,7 +48,7 @@
                             <td bgcolor="#f4912f"><b>Prix Total</b></td>
                         </tr>
                         @foreach($products as $product)
-                            @if(isset($product['title']) && $product['title'] != "" && NULL != $product['title'])
+                            @if($product != "" && !empty($product))
                             <tr>
                                 <td>{{$product['title']}}</td>
                                 <td>{{$product['qty']}}</td>
