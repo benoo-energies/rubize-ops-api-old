@@ -48,12 +48,14 @@
                             <td bgcolor="#f4912f"><b>Prix Total</b></td>
                         </tr>
                         @foreach($products as $product)
-                        <tr>
-                            <td>{{$product['title']}}</td>
-                            <td>{{$product['qty']}}</td>
-                            <td>{{$product['price']}}</td>
-                            <td>{{$product['qty'] * $product['price']}}</td>
-                        </tr>
+                            @if(isset($product['title']) && $product['title'] != "" && NULL != $product['title'])
+                            <tr>
+                                <td>{{$product['title']}}</td>
+                                <td>{{$product['qty']}}</td>
+                                <td>{{$product['price']}}</td>
+                                <td>{{$product['qty'] * $product['price']}}</td>
+                            </tr>
+                            @endif
                         @endforeach
 						<tr>
                             <td colspan="3" bgcolor="#f4912f"><b>TOTAL : </b></td>
