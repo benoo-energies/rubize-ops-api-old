@@ -40,7 +40,7 @@
       			<tr>
                     <td width="30">&nbsp;</td>
 					<td>
-                    <table border="1" cellspacing="0" cellpadding="0" width="100%">
+                    <table border="1" cellspacing="0" cellpadding="10" width="100%">
                         <tr>
                             <td bgcolor="#f4912f"><b>Produit</b></td>
                             <td bgcolor="#f4912f"><b>Quantité</b></td>
