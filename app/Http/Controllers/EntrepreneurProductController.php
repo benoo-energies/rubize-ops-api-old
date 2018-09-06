@@ -11,7 +11,7 @@ class EntrepreneurProductController extends Controller
 
     public function getEntrepreneurProduct($typeId) {
         // Check existance Type ID
-            $products = EntrepreneurProduct::where('status', 1)->where('service_type_id', $typeId)->get();
+            $products = EntrepreneurProduct::where('status', 1)->where('service_type_id', $typeId)->orderBy('picture', 'ASC')->get();
             
             $productData = array();
             
@@ -25,6 +25,7 @@ class EntrepreneurProductController extends Controller
                         //"price_fcfa"    => $product->entrepreneurPrice($entrepreneurId),
                         "price_fcfa"    => $product->price_fcfa,
                         "unity"    => $product->unity,
+                        "decimal"    => $product->weight,
                         
                     );
                     $productData[] = $tmpData;

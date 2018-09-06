@@ -109,7 +109,7 @@ class ServicesController extends Controller
         $serviceType = ServiceType::where('status', 1)->where('id', $typeId)->first();
         if($serviceType) {
 
-            $services = Service::where('status', 1)->where('service_type_id', $typeId)->get();
+            $services = Service::where('status', 1)->where('service_type_id', $typeId)->orderBy('picture')->get();
             
             $servicesData = array();
             
@@ -122,7 +122,7 @@ class ServicesController extends Controller
                         "description"   => $service->description,
                         "price_fcfa"    => $service->entrepreneurPrice($entrepreneurId),
                         "price_euro"    => $service->price_euro,
-                        "description"   => $service->description,
+                        "decimal"       => $service->weight,
                         
                     );
                     $servicesData[] = $tmpData;

@@ -38,6 +38,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/village/add', 'AdminSurveyController@addVillage');
     Route::post('/village/update/{id}', 'AdminSurveyController@updateVillage');
     Route::post('/village/delete/{id}', 'AdminSurveyController@deleteVillage');
+    
+    Route::post('/enqueteur/add', 'AdminSurveyController@addEnqueteur');
+    Route::post('/enqueteur/update/{id}', 'AdminSurveyController@updateEnqueteur');
+    Route::post('/enqueteur/delete/{id}', 'AdminSurveyController@deleteEnqueteur');
 
     /** KPI  */
     /* 

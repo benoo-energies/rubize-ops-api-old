@@ -12,6 +12,7 @@ use App\SurveyResult;
 use App\SurveyWish;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
+use App\Enqueteur;
 
 class SurveyController extends Controller
 {
@@ -31,6 +32,25 @@ class SurveyController extends Controller
         $result = array(
             'status'    => true,
             'data'      => $dataVillages
+        );
+        return response()->json($result);   
+    }
+
+    public function getEnqueteurs() {
+        $enqueteurs = Enqueteur::where('status', 1)->get();
+        $dataEnqueteurs = array();
+        if(count($enqueteurs) > 0) {
+            foreach ($enqueteurs as $key => $enqueteur) {
+                $dataEnqueteurs[] = array(
+                    "id"    => $enqueteur->id,
+                    "name"  => $enqueteur->name
+                );
+            }
+        }
+
+        $result = array(
+            'status'    => true,
+            'data'      => $dataEnqueteurs
         );
         return response()->json($result);   
     }
@@ -325,7 +345,7 @@ class SurveyController extends Controller
         // ENREGISTREMENT DE L'ENQUETE 
         // Survey
         $survey = new SurveyProspect;       
-        $survey->prospect_id = $request->idProspect;
+        $survey->enqueteur_id = $request->enqueteurId;
         $survey->village_id = $request->village;
         $survey->firstname = $request->clientFirstname;
         $survey->lastname = $request->clientLastname;

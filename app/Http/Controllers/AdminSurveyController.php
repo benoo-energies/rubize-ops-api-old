@@ -13,13 +13,15 @@ use App\SurveyDispo;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Entrepreneur;
 use App\Village;
+use App\Enqueteur;
 
 class AdminSurveyController extends Controller
 {
 
     public function getSurveys() {
         $villages = Village::where('status', 1)->get();
-        return view('surveys', ['villages' => $villages]);
+        $enqueteurs = Enqueteur::where('status', 1)->get();
+        return view('surveys', ['villages' => $villages, 'enqueteurs' => $enqueteurs]);
     }
 
     public function addVillage(Request $request) {
@@ -61,6 +63,47 @@ class AdminSurveyController extends Controller
         return Redirect::back()->with('status', 'deleteSuccess');        
 
     }
+
+    public function addEnqueteur(Request $request) {
+        $checkEnqueteur = Enqueteur::where('name', $request->enqueteur)->first();
+        if($checkEnqueteur) {
+            return Redirect::back()->with('status', 'addErrorEnq');        
+        }
+        
+        $enqueteur = new Enqueteur;
+        $enqueteur->name = $request->enqueteur;
+        $enqueteur->status = 1;
+        $enqueteur->save();
+        return Redirect::back()->with('status', 'addSuccessEnq');        
+    }
+
+    public function updateEnqueteur(Request $request, $id) {
+        $enqueteur = Enqueteur::find($id);
+        if(!$enqueteur) {
+            return Redirect::back()->with('status', 'updateIdErrorEnq');        
+        }        
+        $checkVillage = Enqueteur::where('name', $request->enqueteur)->first();
+        if($checkVillage) {
+            return Redirect::back()->with('status', 'updateErrorEnq');        
+        }
+        
+        $enqueteur->name = $request->enqueteur;
+        $enqueteur->status = 1;
+        $enqueteur->save();        
+        return Redirect::back()->with('status', 'updateSuccessEnq');        
+    }
+    
+    public function deleteEnqueteur(Request $request, $id) {
+        $enqueteur = Enqueteur::find($id);
+        if(!$enqueteur) {
+            return Redirect::back()->with('status', 'deleteErrorEnq');        
+        }
+        $enqueteur->status = 2;
+        $enqueteur->save();
+        return Redirect::back()->with('status', 'deleteSuccessEnq');        
+
+    }
+
 
     private function createGlobalExcel($filename, $dataSurvey) {
         Excel::create($filename, function($excel)  use ($dataSurvey) {

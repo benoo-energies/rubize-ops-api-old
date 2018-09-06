@@ -45,7 +45,7 @@
                                             @endif                                        
                                         </div>
                                         <div class="form-group">
-                                            <label for="service_type_id">Image : </label>
+                                            <label for="picture">Image : </label>
                                             <select class="form-control" id="picture" name="picture">
                                                 <option value="batterie.jpg">Batterie</option>
                                                 <option value="biere.jpg">Bière</option>
@@ -66,6 +66,15 @@
                                                 <option value="soda.jpg">Soda</option>
                                                 <option value="telephone.jpg">Telephone</option>
                                                 <option value="viande.jpg">Viande</option>
+                                                <option value="poisson.jpg">Poisson</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="decimal">Type Qté : </label>
+                                            <select class="form-control" id="decimal" name="decimal">
+                                                <option value="0">Entier</option>
+                                                <option value="1">Décimal</option>
                                             </select>
                                         </div>
 
@@ -84,6 +93,7 @@
                                         <th>Titre</th>
                                         <th>Catégorie</th>
                                         <th>Image</th>
+                                        <th>Type Qté</th>
                                         <th>Prix (Fcfa)</th>
                                         <th>&nbsp;</th>
                                         <th>&nbsp;</th>
@@ -126,6 +136,13 @@
                                                                 <option value="soda.jpg" @if($prod->picture == 'soda.jpg') selected @endif >Soda</option>
                                                                 <option value="telephone.jpg" @if($prod->picture == 'telephone.jpg') selected @endif >Telephone</option>
                                                                 <option value="viande.jpg" @if($prod->picture == 'viande.jpg') selected @endif >Viande</option>
+                                                                <option value="poisson.jpg" @if($prod->picture == 'poisson.jpg') selected @endif >Poisson</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <select class="form-control" id="decimal" name="decimal">
+                                                                <option value="0" @if($prod->weight == 0) selected @endif>Entier</option>
+                                                                <option value="1" @if($prod->weight == 1) selected @endif>Décimal</option>
                                                             </select>
                                                         </td>
                                                         <td><input type="text" class="form-control" name="price_fcfa" id="price_fcfa" value="{{$prod->price_fcfa}}" placeholder=""></td>

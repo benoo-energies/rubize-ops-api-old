@@ -27,6 +27,7 @@ class AdminEntrepreneurProduct extends Controller
         $product->service_type_id = $request->service_type_id;
         $product->picture = $request->picture;
         $product->price_fcfa = str_replace(",", ".", $request->price_fcfa);
+        $product->weight = $request->decimal;
         $product->status = 1;
         $product->save();
 
@@ -40,6 +41,7 @@ class AdminEntrepreneurProduct extends Controller
             $product->service_type_id = $request->service_type_id;
             $product->picture = $request->picture;
             $product->price_fcfa = str_replace(",", ".", $request->price_fcfa);
+            $product->weight = $request->decimal;
             $product->save();        
         }
 

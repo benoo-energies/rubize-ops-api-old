@@ -17,15 +17,20 @@ use Illuminate\Http\Request;
     return $request->user();
 }); */
 
-
 Route::get('/', function () {return view('welcome');});
 
 Route::post('survey-prospect/create', 'SurveyController@saveSurveyProspect');
 Route::get('survey/villages', 'SurveyController@getVillages');
+Route::get('survey/enqueteurs', 'SurveyController@getEnqueteurs');
+
+Route::post('entrepreneur/login', 'EntrepreneurController@entrepreneurLogin');
 
 Route::group(['middleware' => 'checkApi'], function () {
-    Route::post('entrepreneur/login', 'EntrepreneurController@entrepreneurLogin');
     
+    // Route GET de stockage
+    Route::get('entrepreneur/data/products/{entrepreneurId}', 'EntrepreneurController@getProductsData');
+    
+
     // Route GET Liste des types de services
     Route::get('services/types', 'ServicesController@getServiceTypes');
     Route::get('services/types/{entrepreneurBenooId}', 'ServicesController@getServiceTypesEnt');
@@ -53,6 +58,7 @@ Route::group(['middleware' => 'checkApi'], function () {
 
     // Route POST d'enregistrement des ventes
     Route::post('order/{entrepreneurId}/create', 'OrderController@saveOrder');
+    Route::post('order/{entrepreneurId}/offline/create', 'OrderController@saveOfflineOrder');
 
     // Page POST d'enregistrement des enquêtes
     Route::post('survey/{entrepreneurId}/create', 'SurveyController@saveSurvey');

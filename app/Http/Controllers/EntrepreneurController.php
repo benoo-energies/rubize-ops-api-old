@@ -8,6 +8,8 @@ use App\Entrepreneur;
 use App\Village;
 use App\Order;
 use App\EntrepreneurOrder;
+use App\ServiceType;
+use App\Service;
 use Illuminate\Support\Facades\Hash;
 
 class EntrepreneurController extends Controller
@@ -122,6 +124,72 @@ class EntrepreneurController extends Controller
         }
 
         return response()->json($result);
+    }
+
+
+    public function getProductsData(Request $request, $entrepreneurId) {
+        $entrepreneur = Entrepreneur::where('id', $entrepreneurId)->where('status', 1)->first();
+        if($entrepreneur) {
+            
+            $typeData = array();
+            $tmpService = explode(",", $entrepreneur->services);
+            $serviceTypes = ServiceType::whereIn('id', $tmpService)->where('status', 1)->get();
+            if($serviceTypes) {
+                foreach ($serviceTypes as $key => $type) {
+                    
+                    $services = Service::where('status', 1)->where('service_type_id', $type->id)->orderBy('picture')->get();
+                    
+                    $tmpProduct = array();
+                    $servicesData = array();
+                    
+                    if(count($services) > 0) {
+                        foreach ($services as $key => $service) {
+                            $tmpProduct = array(
+                                "id"            => $service->id,
+                                "title"         => $service->title,
+                                "picture"       => $service->picture,
+                                "price_fcfa"    => $service->entrepreneurPrice($entrepreneurId),
+                                "decimal"       => $service->weight,
+                                
+                            );
+                            $servicesData[] = $tmpProduct;
+                        }
+                        
+                    }
+
+                    $tmpData[] = array(
+                        "id"        => $type->id,
+                        "title"     => $type->title,
+                        "picture"   => $type->picture,
+                        "products"  => $servicesData
+                    );
+                }
+                $typeData = $tmpData;
+      
+                $result = array(
+                    'status'    => true,
+                    'data'      => $typeData
+                );
+    
+                return response()->json($result);
+            } else {
+                
+                $result = array(
+                    "status" => false,
+                    "error" => "Impossible de récupérer les catégories de services."
+                );
+
+                return response()->json($result);
+            }
+        } else {
+            // ERREUR L'id du type de service est invalide
+            $result = array(
+                "status" => false,
+                "error" => "Impossible de récupérer les produits"
+            );
+
+            return response()->json($result);
+        }
     }
 
 }

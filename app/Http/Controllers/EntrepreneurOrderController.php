@@ -20,7 +20,7 @@ class EntrepreneurOrderController extends Controller
             $order = new EntrepreneurOrder;
             $order->entrepreneur_id = $entrepreneur->id;
             $order->total = $request['total'];
-            $order->status = 1;
+            $order->status = 2; 
             $order->save();
             foreach ($request->products as $key => $value) {
                 if(!empty($value)) {

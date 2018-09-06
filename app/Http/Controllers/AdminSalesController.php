@@ -49,9 +49,9 @@ class AdminSalesController extends Controller
                          //echo "<h1>".count($orders)."</h1>";
                          if(count($orders) > 0) {
                             foreach ($orders as $key => $order) {
-    
+                                if(NULL == $order->date) {$date = $order->created_at; } else { $date = $order->date; }
                                 $saleData = array(
-                                    $order->created_at,
+                                    $date,
                                     $order->entrepreneur_id,
                                     $order->customer_id,
                                     $order->id,
@@ -102,9 +102,9 @@ class AdminSalesController extends Controller
                         //echo "<h1>".count($orders)."</h1>";
                         if(count($orders) > 0) {
                             foreach ($orders as $key => $order) {
-
+                                if(NULL == $order->date) {$date = $order->created_at; } else { $date = $order->date; }
                                 $saleData = array(
-                                    $order->created_at,
+                                    $date,
                                     $order->provider_id,
                                     $order->entrepreneur_id,
                                     $order->id,
@@ -154,9 +154,9 @@ class AdminSalesController extends Controller
                      //echo "<h1>".count($orders)."</h1>";
                      if(count($orders) > 0) {
                         foreach ($orders as $key => $order) {
-
+                            if(NULL == $order->date) {$date = $order->created_at; } else { $date = $order->date; }
                             $saleData = array(
-                                $order->created_at,
+                                $date,
                                 $order->entrepreneur_id,
                                 $order->customer_id,
                                 $order->id,
@@ -199,8 +199,9 @@ class AdminSalesController extends Controller
                      if(count($orders) > 0) {
                         foreach ($orders as $key => $order) {
 
+                            if(NULL == $order->date) {$date = $order->created_at; } else { $date = $order->date; }
                             $saleData = array(
-                                $order->created_at,
+                                $date,
                                 $order->provider_id,
                                 $order->entrepreneur_id,
                                 $order->id,

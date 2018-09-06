@@ -23,6 +23,7 @@ class AdminProductController extends Controller
         $product->service_type_id = $request->service_type_id;
         $product->picture = $request->picture;
         $product->price_fcfa = str_replace(",", ".", $request->price_fcfa);
+        $product->weight = $request->decimal;
         $product->type = 1;
         $product->status = 1;
         $product->save();
@@ -38,6 +39,7 @@ class AdminProductController extends Controller
         $product->service_type_id = $request->service_type_id;
         $product->picture = $request->picture;
         $product->price_fcfa = str_replace(",", ".", $request->price_fcfa);
+        $product->weight = $request->decimal;
         $product->save();
 
         return redirect('/products');

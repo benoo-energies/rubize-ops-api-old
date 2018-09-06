@@ -14,6 +14,11 @@ class SurveyProspect extends Model
         return $this->belongsTo('App\Village');
     }    
 
+    
+    public function enqueteur()
+    {
+        return $this->belongsTo('App\Enqueteur');
+    }    
 
     
     public function surveyResult()
