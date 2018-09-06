@@ -86,6 +86,8 @@ class OrderController extends Controller
                     $order->entrepreneur_id = $entrepreneur->id;
                     $order->status = 1;
                     $order->date = Carbon::createFromTimestamp($cart[0]['date'])->toDateTimeString();
+                    $order->total = $cart[0]['total'];
+                    $order->comission = $cart[0]['total']*0.2;
                     $order->save();
                     
                     foreach ($cart[0]['detail']['products'] as $key => $product ) {
@@ -104,9 +106,6 @@ class OrderController extends Controller
                         $total += $product['price']*$product['qty']; 
                     }        
                     
-                    $order->total = $total;
-                    $order->comission = $total*0.2;;
-                    $order->save();
     
                     $offlineSales[$key] = [];
                 }
