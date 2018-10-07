@@ -8,6 +8,7 @@ use App\Entrepreneur;
 use App\Order;
 use App\OrderDetail;
 use App\Customer;
+use App\Service;
 use Carbon\Carbon;
 
 class OrderController extends Controller
@@ -30,19 +31,24 @@ class OrderController extends Controller
             $order->customer_id = $customerId;
             $order->total = $request['total'];
             $order->comission = $request['comission'];
+            $order->payment_type = $request['paymentType'];
+            $order->date = Carbon::now();
             $order->status = 1;
             $order->save();
             foreach ($request->products as $key => $value) {
                 if(!empty($value)) {
+                    $service = Service::where('id',$value['id'])->where('status', 1)->first();
+                    if($service){ $serviceTypeId = $service->service_type_id; } else { $serviceTypeId = NULL; }
+                    
                     $tmpDetail = new OrderDetail;
                     $tmpDetail->entrepreneur_id = $entrepreneur->id;
                     $tmpDetail->customer_id = $customerId;
                     $tmpDetail->service_id = $value['id'];
-                    $tmpDetail->service_type_id = $value['id'];
+                    $tmpDetail->service_type_id = $serviceTypeId;
                     $tmpDetail->order_id = $order->id;
                     $tmpDetail->quantity = $value['qty'];
                     $tmpDetail->unit_price_fcfa = $value['price'];
-                    $tmpDetail->total_price = $value['price']*$value['qty'];
+                    $tmpDetail->total_price_fcfa = $value['price']*$value['qty'];
                     $tmpDetail->status = 1;
                     $tmpDetail->save();
                 } 
@@ -88,18 +94,22 @@ class OrderController extends Controller
                     $order->date = Carbon::createFromTimestamp($cart[0]['date'])->toDateTimeString();
                     $order->total = $cart[0]['total'];
                     $order->comission = $cart[0]['total']*0.2;
+                    $order->payment_type = $cart[0]['paymentType'];
                     $order->save();
                     
                     foreach ($cart[0]['detail']['products'] as $key => $product ) {
                         if(isset($product['id'])) {
+                            $service = Service::where('id',$product['id'])->where('status', 1)->first();
+                            if($service){ $serviceTypeId = $service->service_type_id; } else { $serviceTypeId = NULL; }
+
                             $tmpDetail = new OrderDetail;
                             $tmpDetail->entrepreneur_id = $entrepreneur->id;
                             $tmpDetail->service_id = $product['id'];
-                            $tmpDetail->service_type_id = $product['id'];
+                            $tmpDetail->service_type_id = $serviceTypeId;
                             $tmpDetail->order_id = $order->id;
                             $tmpDetail->quantity = $product['qty'];
                             $tmpDetail->unit_price_fcfa = $product['price'];
-                            $tmpDetail->total_price = $product['price']*$product['qty'];
+                            $tmpDetail->total_price_fcfa = $product['price']*$product['qty'];
                             $tmpDetail->status = 1;
                             $tmpDetail->save();
                         }

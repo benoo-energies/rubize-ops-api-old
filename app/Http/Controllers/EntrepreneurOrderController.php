@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Entrepreneur;
 use App\EntrepreneurOrder;
 use App\EntrepreneurOrderDetail;
+use App\EntrepreneurProduct;
 use Illuminate\Support\Facades\Mail;
 
 class EntrepreneurOrderController extends Controller
@@ -24,24 +25,29 @@ class EntrepreneurOrderController extends Controller
             $order->save();
             foreach ($request->products as $key => $value) {
                 if(!empty($value)) {
+                    $product = EntrepreneurProduct::where('id',$value['id'])->where('status', 1)->first();
+                    if($product){ $productTypeId = $product->service_type_id; } else { $productTypeId = NULL; }
+
                     $tmpDetail = new EntrepreneurOrderDetail;
                     $tmpDetail->entrepreneur_id = $entrepreneur->id;
                     $tmpDetail->entrepreneur_order_id = $order->id;
                     $tmpDetail->entrepreneur_product_id = $value['id'];
+                    $tmpDetail->entrepreneur_product_type_id = $productTypeId;
                     $tmpDetail->quantity = $value['qty'];
                     $tmpDetail->unit_price_fcfa = $value['price'];
+                    $tmpDetail->total_price_fcfa = $value['price']*$value['qty'];
                     $tmpDetail->status = 1;
                     $tmpDetail->save();
                 } 
             }          
 
             // ENVOI DU MAIL AVEC LA COMMANDE
-            Mail::send('emails.entrepreneur-order', ['products' => $request->products, 'total' => $request['total'], "entrepreneur" => $entrepreneur], function ($m) {
+/*             Mail::send('emails.entrepreneur-order', ['products' => $request->products, 'total' => $request['total'], "entrepreneur" => $entrepreneur], function ($m) {
                 $m->from('contact@benoo-energies.com', 'Benoo Energies');
     
                 $m->to(["akenfack@benoo-energies.com", "contact@benoo-energies.com", "mbordeleau@benoo-energies.com"])->subject('Une nouvelle commande entrepreneur a été enregistrée');
                 //$m->to("vjlockel@gmail.com")->subject('Une nouvelle commande entrepreneur a été enregistrée');
-            });
+            }); */
 
             $result = array(
                 'status'    => true,
@@ -72,7 +78,7 @@ class EntrepreneurOrderController extends Controller
         if(count($orders) > 0) {
             $libelleStatus = array(
                 1 => "Commande en attente de validation",
-                2 => "Commande validée en attente d'expédition",
+                2 => "Commande en cours",
                 3 => "Commande expédiée"
             );
 
