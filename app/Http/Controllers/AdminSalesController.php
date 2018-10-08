@@ -36,6 +36,7 @@ class AdminSalesController extends Controller
                 );
 
                 $column = array_merge($column, $dataService);
+                $column[] = 'Type de paiement';
                 $column[] = 'Total';
 
                 $filename = "Export_sales_entrepreneur_".$id."_".date('Ymd');
@@ -67,6 +68,7 @@ class AdminSalesController extends Controller
                                      $saleData[] = $qty;
                                      //echo "<h5>".$dataService[$key]." : $qty </h5>";
                                  }
+                                 $saleData[] = $order->payment_type;
                                  $saleData[] = $order->total;
                                  $sheet->appendRow($saleData);
                              }
@@ -143,6 +145,7 @@ class AdminSalesController extends Controller
                 'ID vente',
             );            
             $column = array_merge($column, $dataService);
+            $column[] = 'Type de paiement';
             $column[] = 'Total';
             Excel::create($filename, function($excel)  use ($column, $dataService, $idService) {
                 
@@ -172,6 +175,7 @@ class AdminSalesController extends Controller
                                  $saleData[] = $qty;
                                  //echo "<h5>".$dataService[$key]." : $qty </h5>";
                              }
+                             $saleData[] = $order->payment_type;
                              $saleData[] = $order->total;
                              $sheet->appendRow($saleData);
                          }
