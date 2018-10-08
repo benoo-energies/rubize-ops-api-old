@@ -28,7 +28,7 @@ class AdminHomeController extends Controller
 
         $client = Customer::select('created_at')->where('status', 1)->orderBy('created_at', "DESC")->get();
         $nbClient = count($client);
-        if($nbEntrepreneur > 0) {
+        if($nbClient > 0) {
             $dateClient = "Dernier ajout le ".date('d/m/Y à H:i', $client[0]->created_at->timestamp);
         } else {
             $dateClient = "Aucun client actuellement";
