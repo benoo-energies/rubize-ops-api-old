@@ -26,7 +26,7 @@ class CustomersController extends Controller
             $m->from('contact@benoo-energies.com', 'Benoo Energies');
 
             $m->to("vjlockel@gmail.com")->subject('Nouvelle enquête');
-        });        
+        });
 
     }
  */
@@ -35,7 +35,7 @@ class CustomersController extends Controller
         $customer = Customer::where('entrepreneur_id', $entrepreneurId)
         ->where('telephone', $customerNum)
         ->where('status', 1)->first();
-        
+
         // CHeck si l'enrtrepreneur existe en BDD
         if($customer) {
             // Si oui
@@ -53,12 +53,12 @@ class CustomersController extends Controller
                 "telephone_cost"        => $customer->telephone_cost,
 
             );
-        
+
             $result = array(
                 'status'    => true,
                 'data'      => $customerData
             );
-            return response()->json($result);            
+            return response()->json($result);
         } else {
         // Sinon
         //Message d'erreur compte inactif
@@ -69,7 +69,7 @@ class CustomersController extends Controller
                 "message" => "Impossible de se connecter, votre compte n'est pas actif.Contactez votre support Benoo Energies pour plus d'information."
             );
 
-            return response()->json($result);            
+            return response()->json($result);
         }
     }
 
@@ -83,7 +83,7 @@ class CustomersController extends Controller
             $customer->firstname = $request->clientFirstname;
             $customer->lastname = $request->clientLastname;
             if($request->clientJob != "Autre") {
-                $customer->job = $request->clientJob;        
+                $customer->job = $request->clientJob;
             } else {
                 $customer->job = $request->clientJob2;
             }
@@ -120,7 +120,7 @@ class CustomersController extends Controller
                 "arc_souder" => 2450,
                 "ponceuse" => 350
             );
-    
+
             $totalKwDispo = 0;
             $totalKwDispo += $dataKwh['lampe_petrole'] * $request->dispo_lampe;
             $totalKwDispo += $dataKwh['torche_electrique'] * $request->dispo_torche;
@@ -147,7 +147,7 @@ class CustomersController extends Controller
             $totalKwDispo += $dataKwh['moulin_electrique'] * $request->dispo_moulin;
             $totalKwDispo += $dataKwh['arc_souder'] * $request->dispo_arc_souder;
             $totalKwDispo += $dataKwh['ponceuse'] * $request->dispo_ponceuse;
-    
+
             $totalKwWish = 0;
             $totalKwWish += $dataKwh['ampoules'] * $request->wish_ampoule;
             $totalKwWish += $dataKwh['ventilateur'] * $request->wish_ventilateur;
@@ -171,18 +171,18 @@ class CustomersController extends Controller
             $totalKwWish += $dataKwh['moulin_electrique'] * $request->wish_moulin;
             $totalKwWish += $dataKwh['arc_souder'] * $request->wish_arc_souder;
             $totalKwWish += $dataKwh['ponceuse'] * $request->wish_ponceuse;
-            
-            
-            // ENREGISTREMENT DE L'ENQUETE 
+
+
+            // ENREGISTREMENT DE L'ENQUETE
             // Survey
-            $survey = new Survey;       
+            $survey = new Survey;
             $survey->entrepreneur_id = $entrepreneurId;
             $survey->customer_id = $customer->id;
             $survey->firstname = $request->clientFirstname;
             $survey->lastname = $request->clientLastname;
             $survey->telephone = $request->clientTel;
             if($request->clientJob != "Autre") {
-                $survey->job = $request->clientJob;        
+                $survey->job = $request->clientJob;
             } else {
                 $survey->job = $request->clientJob2;
             }
@@ -203,7 +203,7 @@ class CustomersController extends Controller
             $survey->latitude = $request->latitude;
             $survey->status = 1;
             $survey->save();
-    
+
             // SurveyDispo
             $surveyDispo = new SurveyDispo;
             $surveyDispo->survey_id = $survey->id;
@@ -234,7 +234,7 @@ class CustomersController extends Controller
             $surveyDispo->dispo_ponceuse = $request->dispo_ponceuse;
             $surveyDispo->status = 1;
             $surveyDispo->save();
-             
+
             // SurveyWish
             $surveyWish = new SurveyWish;
             $surveyWish->survey_id = $survey->id;
@@ -262,7 +262,7 @@ class CustomersController extends Controller
             $surveyWish->wish_ponceuse = $request->wish_ponceuse;
             $surveyWish->status = 1;
             $surveyWish->save();
-    
+
             // SurveyResult
             $surveyResult = new SurveyResult;
             $surveyResult->survey_id = $survey->id;
@@ -270,14 +270,14 @@ class CustomersController extends Controller
             $surveyResult->besoin_futur = $totalKwWish;
             $surveyResult->status = 1;
             $surveySaved = $surveyResult->save();
-            
-                
-           
+
+
+
             if($surveySaved){
                 Mail::send('emails.survey', ['data' => $request, 'type' => 'Entrepreneur', "dispoKw" => $totalKwDispo, "wishKw" => $totalKwWish], function ($m) {
                     $m->from('contact@benoo-energies.com', 'Benoo Energies');
-        
-                    $m->to(["akenfack@benoo-energies.com", "contact@benoo-energies.com"])->subject('Une nouvelle enquête a été enregistrée (Entrepreneur - client)');
+
+                    $m->to(["contact@benoo-energies.com"])->subject('Une nouvelle enquête a été enregistrée (Entrepreneur - client)');
                 });
                 // Redirection vers la page de création de profil client
                 $result = array(
@@ -296,9 +296,9 @@ class CustomersController extends Controller
                 );
                 return response()->json($result);
             }
-            
+
         } else {
-            
+
             $result = array(
                 "status" => false,
                 "error" => "Le numéro de téléphone est déjà utilisé."

@@ -33,7 +33,7 @@ class SurveyController extends Controller
             'status'    => true,
             'data'      => $dataVillages
         );
-        return response()->json($result);   
+        return response()->json($result);
     }
 
     public function getEnqueteurs() {
@@ -52,7 +52,7 @@ class SurveyController extends Controller
             'status'    => true,
             'data'      => $dataEnqueteurs
         );
-        return response()->json($result);   
+        return response()->json($result);
     }
 
     public function saveSurvey(Request $request, $entrepreneurId) {
@@ -134,17 +134,17 @@ class SurveyController extends Controller
         $totalKwWish += $dataKwh['moulin_electrique'] * $request->wish_moulin;
         $totalKwWish += $dataKwh['arc_souder'] * $request->wish_arc_souder;
         $totalKwWish += $dataKwh['ponceuse'] * $request->wish_ponceuse;
-        
-        
-        // ENREGISTREMENT DE L'ENQUETE 
+
+
+        // ENREGISTREMENT DE L'ENQUETE
         // Survey
-        $survey = new Survey;       
+        $survey = new Survey;
         $survey->entrepreneur_id = $entrepreneurId;
         $survey->firstname = $request->clientFirstname;
         $survey->lastname = $request->clientLastname;
         $survey->telephone = $request->clientTel;
         if($request->clientJob != "Autre") {
-            $survey->job = $request->clientJob;        
+            $survey->job = $request->clientJob;
         } else {
             $survey->job = $request->clientJob2;
         }
@@ -196,7 +196,7 @@ class SurveyController extends Controller
         $surveyDispo->dispo_ponceuse = $request->dispo_ponceuse;
         $surveyDispo->status = 1;
         $surveyDispo->save();
-         
+
         // SurveyWish
         $surveyWish = new SurveyWish;
         $surveyWish->survey_id = $survey->id;
@@ -232,14 +232,14 @@ class SurveyController extends Controller
         $surveyResult->besoin_futur = $totalKwWish;
         $surveyResult->status = 1;
         $surveySaved = $surveyResult->save();
-        
+
 
         if($surveySaved) {
             Mail::send('emails.survey', ['data' => $request, 'type' => 'Entrepreneur', "dispoKw" => $totalKwDispo, "wishKw" => $totalKwWish], function ($m) {
                 $m->from('contact@benoo-energies.com', 'Benoo Energies');
-    
-                $m->to(["akenfack@benoo-energies.com", "contact@benoo-energies.com"])->subject('Une nouvelle enquête a été enregistrée (Entrepreneur)');
-            });               
+
+                $m->to(["contact@benoo-energies.com"])->subject('Une nouvelle enquête a été enregistrée (Entrepreneur)');
+            });
             // Redirection vers la page de création de profil client
             $result = array(
                 "status" => true,
@@ -256,7 +256,7 @@ class SurveyController extends Controller
                 "error" => "Une erreur s'est produite, veuillez réessayer. Si le problème persiste contactez votre support Benoo Energies."
             );
             return response()->json($result);
-        } 
+        }
     }
 
 
@@ -340,18 +340,18 @@ class SurveyController extends Controller
         $totalKwWish += $dataKwh['moulin_electrique'] * $request->wish_moulin;
         $totalKwWish += $dataKwh['arc_souder'] * $request->wish_arc_souder;
         $totalKwWish += $dataKwh['ponceuse'] * $request->wish_ponceuse;
-        
-        
-        // ENREGISTREMENT DE L'ENQUETE 
+
+
+        // ENREGISTREMENT DE L'ENQUETE
         // Survey
-        $survey = new SurveyProspect;       
+        $survey = new SurveyProspect;
         $survey->enqueteur_id = $request->enqueteurId;
         $survey->village_id = $request->village;
         $survey->firstname = $request->clientFirstname;
         $survey->lastname = $request->clientLastname;
         $survey->telephone = $request->clientTel;
         if($request->clientJob != "Autre") {
-            $survey->job = $request->clientJob;        
+            $survey->job = $request->clientJob;
         } else {
             $survey->job = $request->clientJob2;
         }
@@ -408,7 +408,7 @@ class SurveyController extends Controller
         $surveyDispo->dispo_ponceuse = $request->dispo_ponceuse;
         $surveyDispo->status = 1;
         $surveyDispo->save();
-         
+
         // SurveyWish
         $surveyWish = new SurveyWish;
         $surveyWish->survey_prospect_id = $survey->id;
@@ -444,14 +444,14 @@ class SurveyController extends Controller
         $surveyResult->besoin_futur = $totalKwWish;
         $surveyResult->status = 1;
         $surveySaved = $surveyResult->save();
-        
+
 
         if($surveySaved) {
             Mail::send('emails.survey', ['data' => $request, 'type' => 'Prospect', "dispoKw" => $totalKwDispo, "wishKw" => $totalKwWish], function ($m) {
                 $m->from('contact@benoo-energies.com', 'Benoo Energies');
-    
-                $m->to(["akenfack@benoo-energies.com", "contact@benoo-energies.com"])->subject('Une nouvelle enquête a été enregistrée (Prospect)');
-            });             
+
+                $m->to(["contact@benoo-energies.com"])->subject('Une nouvelle enquête a été enregistrée (Prospect)');
+            });
             // Redirection vers la page de création de profil client
             $result = array(
                 "status" => true,
@@ -468,7 +468,7 @@ class SurveyController extends Controller
                 "error" => "Une erreur s'est produite, veuillez réessayer. Si le problème persiste contactez votre support Benoo Energies."
             );
             return response()->json($result);
-        } 
+        }
     }
 
 }

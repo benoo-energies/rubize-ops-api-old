@@ -21,7 +21,7 @@ class EntrepreneurOrderController extends Controller
             $order = new EntrepreneurOrder;
             $order->entrepreneur_id = $entrepreneur->id;
             $order->total = $request['total'];
-            $order->status = 2; 
+            $order->status = 2;
             $order->save();
             foreach ($request->products as $key => $value) {
                 if(!empty($value)) {
@@ -38,14 +38,14 @@ class EntrepreneurOrderController extends Controller
                     $tmpDetail->total_price_fcfa = $value['price']*$value['qty'];
                     $tmpDetail->status = 1;
                     $tmpDetail->save();
-                } 
-            }          
+                }
+            }
 
             // ENVOI DU MAIL AVEC LA COMMANDE
             Mail::send('emails.entrepreneur-order', ['products' => $request->products, 'total' => $request['total'], "entrepreneur" => $entrepreneur], function ($m) {
                 $m->from('contact@benoo-energies.com', 'Benoo Energies');
-    
-                $m->to(["akenfack@benoo-energies.com", "contact@benoo-energies.com", "mbordeleau@benoo-energies.com"])->subject('Une nouvelle commande entrepreneur a été enregistrée');
+
+                $m->to(["contact@benoo-energies.com"])->subject('Une nouvelle commande entrepreneur a été enregistrée');
                 //$m->to("vjlockel@gmail.com")->subject('Une nouvelle commande entrepreneur a été enregistrée');
             });
 
@@ -55,8 +55,8 @@ class EntrepreneurOrderController extends Controller
                     "entrepreneurBenooId"   => $entrepreneur->id
                 )
             );
-            return response()->json($result);            
-            
+            return response()->json($result);
+
         } else {
             // Si le numéro de l'entrepreneur n'existe pas en BDD
             $result = array(
@@ -65,7 +65,7 @@ class EntrepreneurOrderController extends Controller
             );
 
             return response()->json($result);
-        }  
+        }
     }
 
     public function getOrderHistory($entrepreneurId) {
@@ -73,7 +73,7 @@ class EntrepreneurOrderController extends Controller
             ->where('entrepreneur_id', $entrepreneurId)
             ->orderBy('created_at', 'ASC')
             ->get();
-    
+
         $orderData = array();
         if(count($orders) > 0) {
             $libelleStatus = array(
@@ -84,16 +84,16 @@ class EntrepreneurOrderController extends Controller
 
             foreach ($orders as $key => $order) {
                 $details = $order->orderDetails;
-                
+
                 $detailTemp = "";
-                
+
                 if(count($details) > 0) {
                     $i = 0;
                     foreach ($details as $key => $detail) {
                         /* if($i > 0) { $detailTemp .="<br>"; } */
                         $detailTemp .= "<li>".$detail->quantity." x ".$detail->product->title."</li>";
                         $i++;
-                    }                    
+                    }
                 }
 
                 $tmpData = array(
@@ -134,7 +134,7 @@ class EntrepreneurOrderController extends Controller
                 'status'    => true,
                 'data'      => array()
             );
-            return response()->json($result);            
+            return response()->json($result);
         } else {
             // Si le numéro de l'entrepreneur n'existe pas en BDD
             $result = array(
@@ -142,7 +142,7 @@ class EntrepreneurOrderController extends Controller
                 "error" => "Impossible de mettre à jour le statut de votre commande. Si le problème persiste, contactez votre support Benoo Energies.",
             );
 
-            return response()->json($result);  
+            return response()->json($result);
         }
     }
 
